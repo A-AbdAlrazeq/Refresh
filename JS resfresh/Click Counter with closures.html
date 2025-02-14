@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Click Counter with Delay</title>
+  </head>
+  <body>
+    <button id="clickButton">Click me</button>
+    <p id="counter">Count: 0</p>
+
+    <script>
+      function createDelayedCounter() {
+        let count = 0; // Initialize count state
+        let timeout; // To store timeout ID
+        let isWaiting = false; // To track if a click is in progress
+
+        return function () {
+          if (isWaiting) {
+            console.log("Click ignored, waiting for previous one to finish.");
+            return; // Ignore click if the previous one is still being processed
+          }
+
+          isWaiting = true; // Set flag to indicate waiting
+          console.log("Waiting...");
+
+          timeout = setTimeout(() => {
+            count++; // Update the count after delay
+            document.getElementById("counter").textContent = "Count: " + count;
+            console.log("Count updated:", count);
+            isWaiting = false; // Reset flag after update
+          }, 3000); // Wait for 3 seconds before updating the count
+        };
+      }
+
+      const counter = createDelayedCounter(); // Create counter function
+      document.getElementById("clickButton").addEventListener("click", counter); // Attach to button click event
+    </script>
+  </body>
+</html>
